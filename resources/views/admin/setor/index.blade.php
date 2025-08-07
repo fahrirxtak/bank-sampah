@@ -48,6 +48,11 @@
                             <i class="fas fa-money-bill-wave mr-2"></i>
                             Tarik Tunai
                         </button>
+                        <button id="tabKonfirmasiTarikTunai"
+                            class="tab-button py-4 px-2 border-b-2 font-medium text-sm transition-all duration-200 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            Konfirmasi Tarik Tunai
+                        </button>
                     </nav>
                 </div>
             </div>
@@ -306,6 +311,364 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                 </div>
             </div>
 
+            <div  id="formKonfirmasiTarikTunai" class="form-container min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8 hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
+                    <!-- Header Section -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 class="text-3xl font-bold text-gray-800">Konfirmasi Penarikan Dana</h1>
+                                    <p class="text-gray-600">Kelola dan konfirmasi penarikan dana nasabah</p>
+                                </div>
+                            </div>
+
+                            <!-- Stats Cards -->
+                            <div class="hidden md:flex space-x-4">
+                                <div
+                                    class="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-green-100">
+                                    <div class="text-sm text-gray-600">Total Ajuan</div>
+                                    <div class="text-2xl font-bold text-gray-800">{{ $ajuan->count() }}</div>
+                                </div>
+                                <div
+                                    class="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-yellow-100">
+                                    <div class="text-sm text-gray-600">Pending</div>
+                                    <div class="text-2xl font-bold text-yellow-600">
+                                        {{ $ajuan->where('status', 'pending')->count() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Success Alert -->
+                    @if (session('success'))
+                        <div
+                            class="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-xl mb-6 flex items-center shadow-lg">
+                            <svg class="w-6 h-6 mr-3 text-green-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <div class="font-medium">Berhasil!</div>
+                                <div class="text-sm">{{ session('success') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Main Content Card -->
+                    <div
+                        class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-green-100 overflow-hidden ">
+                        <!-- Card Header -->
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-xl font-bold text-white">Daftar Penarikan</h2>
+                                <div class="text-green-100 text-sm">
+                                    {{ now()->format('d M Y') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Table Section -->
+                        <div class="p-6">
+                            @if ($ajuan->count() > 0)
+                                <!-- Mobile Stats (visible on small screens) -->
+                                <div class="md:hidden grid grid-cols-2 gap-4 mb-6">
+                                    <div class="bg-gray-50 rounded-xl px-4 py-3">
+                                        <div class="text-sm text-gray-600">Total Ajuan</div>
+                                        <div class="text-2xl font-bold text-gray-800">{{ $ajuan->count() }}</div>
+                                    </div>
+                                    <div class="bg-yellow-50 rounded-xl px-4 py-3">
+                                        <div class="text-sm text-gray-600">Pending</div>
+                                        <div class="text-2xl font-bold text-yellow-600">
+                                            {{ $ajuan->where('status', 'pending')->count() }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Desktop Table -->
+                                <div class="hidden lg:block overflow-hidden rounded-xl border border-gray-200">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    #</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Nasabah</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Jumlah</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Tanggal</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Status</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach ($ajuan as $item)
+                                                <tr class="hover:bg-gray-50 transition-colors">
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        {{ $loop->iteration }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <div
+                                                                class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-3">
+                                                                <span class="text-white font-medium text-sm">
+                                                                    {{ substr($item->user->name, 0, 1) }}
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <div class="text-sm font-medium text-gray-900">
+                                                                    {{ $item->user->name }}</div>
+                                                                <div class="text-sm text-gray-500">
+                                                                    {{ $item->user->email }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-bold text-gray-900">Rp
+                                                            {{ number_format($item->jumlah_tarik, 0, ',', '.') }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        {{ $item->created_at->format('d M Y') }}
+                                                        <div class="text-xs text-gray-400">
+                                                            {{ $item->created_at->format('H:i') }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        @if ($item->status == 'approved')
+                                                            <span
+                                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                <span
+                                                                    class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                                                                Disetujui
+                                                            </span>
+                                                        @elseif ($item->status == 'rejected')
+                                                            <span
+                                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                <span
+                                                                    class="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
+                                                                Ditolak
+                                                            </span>
+                                                        @else
+                                                            <span
+                                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                <span
+                                                                    class="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
+                                                                Pending
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        @if ($item->status == 'pending')
+                                                            <div class="flex space-x-2">
+                                                                <form method="POST"
+                                                                    action="{{ route('admin.penarikan.konfirmasi', $item->id) }}"
+                                                                    class="inline">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status"
+                                                                        value="approved">
+                                                                    <button type="submit"
+                                                                        onclick="return confirm('Apakah Anda yakin ingin menyetujui penarikan ini?')"
+                                                                        class="inline-flex items-center px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                                                        <svg class="w-3 h-3 mr-1" fill="none"
+                                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                stroke-width="2" d="M5 13l4 4L19 7">
+                                                                            </path>
+                                                                        </svg>
+                                                                        Setujui
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        @else
+                                                            <span class="text-gray-400 text-xs">Sudah diproses</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Mobile Cards -->
+                                <div class="lg:hidden space-y-4">
+                                    @foreach ($ajuan as $item)
+                                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-3">
+                                                        <span class="text-white font-medium text-sm">
+                                                            {{ substr($item->user->name, 0, 1) }}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-medium text-gray-900">{{ $item->user->name }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $item->created_at->format('d M Y, H:i') }}</div>
+                                                    </div>
+                                                </div>
+                                                @if ($item->status == 'approved')
+                                                    <span
+                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+                                                        Disetujui
+                                                    </span>
+                                                @elseif ($item->status == 'rejected')
+                                                    <span
+                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                        <span class="w-2 h-2 bg-red-400 rounded-full mr-1"></span>
+                                                        Ditolak
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                        <span class="w-2 h-2 bg-yellow-400 rounded-full mr-1"></span>
+                                                        Pending
+                                                    </span>
+                                                @endif
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <div class="text-lg font-bold text-gray-900">Rp
+                                                    {{ number_format($item->jumlah_tarik, 0, ',', '.') }}</div>
+                                            </div>
+
+                                            @if ($item->status == 'pending')
+                                                <div class="flex space-x-2">
+                                                    <form method="POST"
+                                                        action="{{ route('admin.penarikan.konfirmasi', $item->id) }}"
+                                                        class="flex-1">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status" value="approved">
+                                                        <button type="submit"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menyetujui penarikan ini?')"
+                                                            class="w-full inline-flex items-center justify-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors">
+                                                            <svg class="w-4 h-4 mr-2" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                            </svg>
+                                                            Setujui
+                                                        </button>
+                                                    </form>
+                                                    <form method="POST"
+                                                        action="{{ route('admin.penarikan.konfirmasi', $item->id) }}"
+                                                        class="flex-1">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status" value="rejected">
+                                                        <button type="submit"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menolak penarikan ini?')"
+                                                            class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
+                                                            <svg class="w-4 h-4 mr-2" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                            </svg>
+                                                            Tolak
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                <div class="text-center text-gray-400 text-sm py-2">Sudah diproses
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <!-- Empty State -->
+                                <div class="text-center py-12">
+                                    <div
+                                        class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada penarikan yang
+                                        menunggu konfirmasi</h3>
+                                    <p class="text-gray-500 max-w-md mx-auto">Semua permintaan penarikan telah diproses
+                                        atau belum ada pengajuan penarikan baru.</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Footer Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-blue-800">Proses Konfirmasi</h4>
+                            </div>
+                            <p class="text-blue-700 text-sm">Periksa setiap pengajuan dengan teliti sebelum memberikan
+                                konfirmasi.</p>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-green-800">Waktu Proses</h4>
+                            </div>
+                            <p class="text-green-700 text-sm">Konfirmasi penarikan dalam 1-2 hari kerja untuk menjaga
+                                kepercayaan nasabah.</p>
+                        </div>
+
+                        <div class="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-purple-800">Keamanan</h4>
+                            </div>
+                            <p class="text-purple-700 text-sm">Pastikan saldo nasabah mencukupi sebelum menyetujui
+                                penarikan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal Konfirmasi Password -->
             <div id="passwordModal"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
@@ -521,31 +884,31 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
 
     <!-- JavaScript -->
     <script>
+        function showPasswordModal() {
+            // Ambil nilai dari form utama
+            const userId = document.querySelector('select[name="user_id"]').value;
+            const jumlah = document.querySelector('input[name="jumlah_uang"]').value;
+            const catatan = document.querySelector('textarea[name="catatan"]').value;
 
-            function showPasswordModal() {
-        // Ambil nilai dari form utama
-        const userId = document.querySelector('select[name="user_id"]').value;
-        const jumlah = document.querySelector('input[name="jumlah_uang"]').value;
-        const catatan = document.querySelector('textarea[name="catatan"]').value;
+            // Masukkan ke input hidden di modal
+            document.getElementById('user_id_hidden').value = userId;
+            document.getElementById('jumlah_uang_hidden').value = jumlah;
+            document.getElementById('catatan_hidden').value = catatan;
 
-        // Masukkan ke input hidden di modal
-        document.getElementById('user_id_hidden').value = userId;
-        document.getElementById('jumlah_uang_hidden').value = jumlah;
-        document.getElementById('catatan_hidden').value = catatan;
+            // Tampilkan modal
+            document.getElementById('passwordModal').classList.remove('hidden');
+        }
 
-        // Tampilkan modal
-        document.getElementById('passwordModal').classList.remove('hidden');
-    }
-
-    function hidePasswordModal() {
-        document.getElementById('passwordModal').classList.add('hidden');
-    }
+        function hidePasswordModal() {
+            document.getElementById('passwordModal').classList.add('hidden');
+        }
         // Tab switching functionality
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = {
                 tabSetorSampah: 'formSetorSampah',
                 tabSetorTunai: 'formSetorTunai',
-                tabTarikTunai: 'formTarikTunai'
+                tabTarikTunai: 'formTarikTunai',
+                tabKonfirmasiTarikTunai: 'formKonfirmasiTarikTunai'
             };
 
             // Initialize first tab as active
