@@ -39,6 +39,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/sampah/{id}', [SampahController::class, 'update'])->name('admin.sampah.update');
     Route::delete('/sampah/{id}', [SampahController::class, 'destroy'])->name('admin.sampah.destroy');
 
+
+    // manajemen setor & tarik
+    Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
+    Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
+    Route::post('/setor-tunai', [SetorController::class, 'storeTunai'])->name('setor.tunai.store');
     // transaksi operasional
     Route::get('/transaksi-operasional', [TransaksiOperasionalController::class, 'index'])->name('admin.transaksi.index');
     Route::get('/transaksi-operasional/create', [TransaksiOperasionalController::class, 'create'])->name('admin.transaksi.create');
@@ -49,8 +54,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
     // manajemen setor & tarik
-    Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
-    Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
+      Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
+     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
 });
 
 // ===========================
@@ -69,6 +74,11 @@ Route::middleware(['auth', 'role:nasabah'])->group(function () {
 
     // Saldo Nasabah (HARUS diarahkan ke method saldo, bukan index)
     Route::get('/nasabah/saldo', [NasabahController::class, 'saldo'])->name('nasabah.saldo');
+
+    // tarik tunai
+    Route::get('/nasabah/tarik-tunai', [NasabahController::class, 'tarikTunai'])->name('nasabah.tarik.tunai');
+    Route::post('/tarik-saldo', [NasabahController::class, 'store'])->name('tarik.store');
+
 
     // Profile Nasabah
     Route::get('/nasabah-profile', [ProfileController::class, 'nasabahedit'])->name('nasabah.profile.edit');
