@@ -238,9 +238,9 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-900">
-                                        <div class="max-w-xs">
+                                        <div class="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
                                             @if ($n->alamat)
-                                                <div class="truncate" title="{{ $n->alamat }}">
+                                                <div class="truncate flex items-center" title="{{ $n->alamat }}">
                                                     <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
                                                     {{ $n->alamat }}
                                                 </div>
@@ -248,6 +248,7 @@
                                                 <span class="text-gray-400 italic text-xs">Belum diisi</span>
                                             @endif
                                         </div>
+
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <div class="flex flex-col">
@@ -298,56 +299,59 @@
                 </div>
 
                 <!-- Table Footer -->
-               @if ($nasabah->hasPages())
-    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div class="text-sm text-gray-700 mb-4 sm:mb-0">
-                Menampilkan <span class="font-medium">{{ $nasabah->firstItem() }}</span> sampai
-                <span class="font-medium">{{ $nasabah->lastItem() }}</span> dari
-                <span class="font-medium">{{ $nasabah->total() }}</span> nasabah
-            </div>
-            <div class="flex items-center space-x-1">
-                {{-- Previous Page Link --}}
-                @if ($nasabah->onFirstPage())
-                    <span class="px-3 py-1 text-sm text-gray-400 bg-white border border-gray-300 rounded cursor-not-allowed">
-                        <i class="fas fa-chevron-left mr-1"></i> Sebelumnya
-                    </span>
-                @else
-                    <a href="{{ $nasabah->previousPageUrl() }}"
-                       class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                        <i class="fas fa-chevron-left mr-1"></i> Sebelumnya
-                    </a>
-                @endif
+                @if ($nasabah->hasPages())
+                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                            <div class="text-sm text-gray-700 mb-4 sm:mb-0">
+                                Menampilkan <span class="font-medium">{{ $nasabah->firstItem() }}</span> sampai
+                                <span class="font-medium">{{ $nasabah->lastItem() }}</span> dari
+                                <span class="font-medium">{{ $nasabah->total() }}</span> nasabah
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                {{-- Previous Page Link --}}
+                                @if ($nasabah->onFirstPage())
+                                    <span
+                                        class="px-3 py-1 text-sm text-gray-400 bg-white border border-gray-300 rounded cursor-not-allowed">
+                                        <i class="fas fa-chevron-left mr-1"></i> Sebelumnya
+                                    </span>
+                                @else
+                                    <a href="{{ $nasabah->previousPageUrl() }}"
+                                        class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-chevron-left mr-1"></i> Sebelumnya
+                                    </a>
+                                @endif
 
-                {{-- Pagination Elements --}}
-                <div class="hidden sm:flex items-center space-x-1">
-                    @foreach ($nasabah->getUrlRange(1, $nasabah->lastPage()) as $page => $url)
-                        @if ($page == $nasabah->currentPage())
-                            <span class="px-3 py-1 text-sm text-white bg-green-600 rounded">{{ $page }}</span>
-                        @else
-                            <a href="{{ $url }}"
-                               class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                                {{ $page }}
-                            </a>
-                        @endif
-                    @endforeach
-                </div>
+                                {{-- Pagination Elements --}}
+                                <div class="hidden sm:flex items-center space-x-1">
+                                    @foreach ($nasabah->getUrlRange(1, $nasabah->lastPage()) as $page => $url)
+                                        @if ($page == $nasabah->currentPage())
+                                            <span
+                                                class="px-3 py-1 text-sm text-white bg-green-600 rounded">{{ $page }}</span>
+                                        @else
+                                            <a href="{{ $url }}"
+                                                class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                                                {{ $page }}
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                </div>
 
-                {{-- Next Page Link --}}
-                @if ($nasabah->hasMorePages())
-                    <a href="{{ $nasabah->nextPageUrl() }}"
-                       class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                        Selanjutnya <i class="fas fa-chevron-right ml-1"></i>
-                    </a>
-                @else
-                    <span class="px-3 py-1 text-sm text-gray-400 bg-white border border-gray-300 rounded cursor-not-allowed">
-                        Selanjutnya <i class="fas fa-chevron-right ml-1"></i>
-                    </span>
+                                {{-- Next Page Link --}}
+                                @if ($nasabah->hasMorePages())
+                                    <a href="{{ $nasabah->nextPageUrl() }}"
+                                        class="px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                                        Selanjutnya <i class="fas fa-chevron-right ml-1"></i>
+                                    </a>
+                                @else
+                                    <span
+                                        class="px-3 py-1 text-sm text-gray-400 bg-white border border-gray-300 rounded cursor-not-allowed">
+                                        Selanjutnya <i class="fas fa-chevron-right ml-1"></i>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 @endif
-            </div>
-        </div>
-    </div>
-@endif
             </div>
         </div>
     </div>

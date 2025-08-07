@@ -185,6 +185,7 @@
         </div>
 
         <!-- Navigation -->
+        <!-- Navigation -->
         <nav class="flex-1 px-2 py-4 overflow-y-auto scrollbar-thin">
             <div class="space-y-1">
                 <h3 class="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3 px-3 sidebar-header-text">
@@ -202,12 +203,26 @@
                     <span class="sidebar-text">Transaksi</span>
                 </a>
 
-                <a href=""
+                <a href="{{ route('admin.setor.index') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i
                         class="fas fa-hand-holding text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Setoran & Tarikan</span>
+                    <span class="sidebar-text">Setoran</span>
                 </a>
+
+                <a href=""
+                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
+                    <i
+                        class="fas fa-money-bill-wave text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="sidebar-text">Pengeluaran</span>
+                </a>
+
+                <a href=""
+                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
+                    <i class="fas fa-wallet text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
+                    <span class="sidebar-text">Saldo Admin</span>
+                </a>
+
 
                 <h3
                     class="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3 mt-4 px-3 sidebar-header-text">
@@ -219,19 +234,14 @@
                     <span class="sidebar-text">Nasabah</span>
                 </a>
 
-                <a href=""
+                <a href="{{ route('admin.sampah.index') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-dumpster text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Jenis Sampah</span>
                 </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i class="fas fa-chart-line text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Laporan Keuangan</span>
-                </a>
             </div>
         </nav>
+
 
         <!-- Footer -->
         <div class="p-2 border-t border-white/10 bg-black/10">
