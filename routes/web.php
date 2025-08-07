@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NasabahController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HargaSampahController;
 
@@ -24,6 +25,9 @@ Route::middleware(['auth', 'role:nasabah'])->group(function () {
 
     // harga sampah
     Route::get('/nasabah/harga-sampah', [HargaSampahController::class, 'index'])->name('harga.sampah');
+
+    // saldo
+    Route::get('/nasabah/saldo', [NasabahController::class, 'saldo'])->name('nasabah.saldo');
 
 
      // profile
