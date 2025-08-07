@@ -195,18 +195,6 @@
 
                 <a href=""
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i class="fas fa-exchange-alt text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Transaksi Saya</span>
-                </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i class="fas fa-arrow-up text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Setor Sampah</span>
-                </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-arrow-down text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Tarik Saldo</span>
                 </a>
@@ -215,7 +203,7 @@
                     class="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3 mt-4 px-3 sidebar-header-text">
                     Informasi</h3>
 
-                <a href=""
+                <a href="{{ route('harga.sampah') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-dumpster text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Harga Sampah</span>
@@ -303,8 +291,8 @@
                     <a href="{{ route('nasabah.profile.edit') }}"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
                             class="fas fa-user-circle mr-2"></i> Profil Saya</a>
-                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
-                            class="fas fa-wallet mr-2"></i> Saldo & Mutasi</a>
+                    <a href="{{ route('nasabah.saldo') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                            class="fas fa-wallet mr-2"></i> Saldo</a>
                     <div class="border-t border-gray-100"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
