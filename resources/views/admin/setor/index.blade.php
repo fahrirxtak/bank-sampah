@@ -63,11 +63,30 @@
                         <p class="text-green-100 mt-2">Bawa sampah ke bank sampah untuk ditimbang oleh admin</p>
                     </div>
 
-                    <form action="" method="POST" class="p-8 space-y-6" enctype="multipart/form-data">
+                    <form action="{{ route('setor.sampah.store') }}" method="POST" class="p-8 space-y-6"
+                        enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="jenis_transaksi" value="setor_sampah">
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                            <!-- Pilih User yang Setor -->
+                            <div class="space-y-3">
+                                <label class="flex items-center text-sm font-semibold text-gray-700">
+                                    <i class="fas fa-user mr-2 text-green-600"></i>
+                                    User yang Setor <span class="text-red-500 ml-1">*</span>
+                                </label>
+                                <select name="user_id"
+                                    class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
+                                    required>
+                                    <option value="">Pilih User</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <!-- Jenis Sampah -->
                             <div class="space-y-3">
                                 <label class="flex items-center text-sm font-semibold text-gray-700">
@@ -97,20 +116,22 @@
                                     class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
                                     placeholder="Contoh: 2.5" required>
                             </div>
+
+                            <!-- Catatan -->
+                            <div class="space-y-3">
+                                <label class="flex items-center text-sm font-semibold text-gray-700">
+                                    <i class="fas fa-sticky-note mr-2 text-green-600"></i>
+                                    Catatan (Opsional)
+                                </label>
+                                <textarea name="catatan" rows="3"
+                                    class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
+                                    placeholder="Tambahkan catatan tentang sampah..."></textarea>
+                            </div>
                         </div>
 
 
 
-                        <!-- Catatan -->
-                        <div class="space-y-3">
-                            <label class="flex items-center text-sm font-semibold text-gray-700">
-                                <i class="fas fa-sticky-note mr-2 text-green-600"></i>
-                                Catatan (Opsional)
-                            </label>
-                            <textarea name="catatan" rows="3"
-                                class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
-                                placeholder="Tambahkan catatan tentang sampah..."></textarea>
-                        </div>
+
 
                         <!-- Preview Harga -->
                         <div id="previewHarga" class="hidden">
@@ -151,7 +172,8 @@
                         <p class="text-blue-100 mt-2">Tambahkan saldo ke rekening bank sampah Anda</p>
                     </div>
 
-                    <form action="" method="POST" class="p-8 space-y-6">
+                    <form action="" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+
                         @csrf
                         <input type="hidden" name="jenis_transaksi" value="setor_tunai">
 
@@ -517,7 +539,7 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                     // Remove active class from all tabs
                     document.querySelectorAll('.tab-button').forEach(tab => {
                         tab.classList.remove('active', 'border-green-500',
-                        'text-green-600');
+                            'text-green-600');
                         tab.classList.add('border-transparent', 'text-gray-500');
                     });
 
