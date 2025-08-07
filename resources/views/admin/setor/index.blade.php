@@ -172,10 +172,27 @@
                         <p class="text-blue-100 mt-2">Tambahkan saldo ke rekening bank sampah Anda</p>
                     </div>
 
-                    <form action="" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+                    <form action="{{ route('setor.tunai.store') }}" method="POST" enctype="multipart/form-data"
+                        class="p-8 space-y-6">
 
                         @csrf
                         <input type="hidden" name="jenis_transaksi" value="setor_tunai">
+
+                        <div class="space-y-3">
+                            <label class="flex items-center text-sm font-semibold text-gray-700">
+                                <i class="fas fa-user mr-2 text-blue-600"></i>
+                                User yang Setor <span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <select name="user_id"
+                                class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
+                                required>
+                                <option value="">Pilih User</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
                         <div class="space-y-3">
                             <label class="flex items-center text-sm font-semibold text-gray-700">
@@ -186,47 +203,6 @@
                                 class="w-full rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3 text-lg"
                                 placeholder="Minimal Rp 1.000" required>
                             <p class="text-sm text-gray-500">Minimal setoran Rp 1.000, kelipatan Rp 1.000</p>
-                        </div>
-
-                        <!-- Bukti Transfer -->
-                        <div class="space-y-3">
-                            <label class="flex items-center text-sm font-semibold text-gray-700">
-                                <i class="fas fa-receipt mr-2 text-blue-600"></i>
-                                Bukti Transfer <span class="text-red-500 ml-1">*</span>
-                            </label>
-                            <div
-                                class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors duration-200">
-                                <input type="file" name="bukti_transfer" accept="image/*" class="hidden"
-                                    id="transferInput" required>
-                                <label for="transferInput" class="cursor-pointer">
-                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                                    <p class="text-gray-600">Upload bukti transfer</p>
-                                    <p class="text-sm text-gray-500 mt-1">Screenshot dari aplikasi mobile banking</p>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Info Rekening -->
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-                            <h4 class="font-semibold text-blue-800 mb-3">Informasi Transfer</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <p class="text-gray-600">Bank Tujuan</p>
-                                    <p class="font-medium text-gray-800">BCA</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">No. Rekening</p>
-                                    <p class="font-medium text-gray-800">1234567890</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">Atas Nama</p>
-                                    <p class="font-medium text-gray-800">Bank Sampah Hijau</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-600">Kode Unik</p>
-                                    <p class="font-medium text-gray-800">Tambahkan ID nasabah sebagai kode unik</p>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="space-y-3">
@@ -264,6 +240,22 @@
                     <form action="" method="POST" class="p-8 space-y-6">
                         @csrf
                         <input type="hidden" name="jenis_transaksi" value="tarik_tunai">
+                        <div class="space-y-3">
+                            <label class="flex items-center text-sm font-semibold text-gray-700">
+                                <i class="fas fa-user mr-2 text-blue-600"></i>
+                                User yang Setor <span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <select name="user_id"
+                                class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
+                                required>
+                                <option value="">Pilih User</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" data-saldo="{{ $user->saldo }}">
+                                        {{ $user->name }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             <div class="space-y-3">
@@ -277,19 +269,6 @@
                                 <p class="text-sm text-gray-500">Minimal penarikan Rp 10.000</p>
                             </div>
 
-                            <div class="space-y-3">
-                                <label class="flex items-center text-sm font-semibold text-gray-700">
-                                    <i class="fas fa-exchange-alt mr-2 text-purple-600"></i>
-                                    Metode Penarikan <span class="text-red-500 ml-1">*</span>
-                                </label>
-                                <select name="metode_penarikan"
-                                    class="w-full rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200 p-3"
-                                    required>
-                                    <option value="">Pilih Metode</option>
-                                    <option value="tunai">💵 Ambil Tunai di Lokasi</option>
-                                    <option value="transfer">🏦 Transfer ke Rekening Bank</option>
-                                </select>
-                            </div>
                         </div>
 
                         <!-- Info Penarikan -->
@@ -316,15 +295,44 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                         </div>
 
                         <div class="pt-6 border-t border-gray-200">
-                            <button type="submit"
+                            <button type="button" onclick="showPasswordModal()"
                                 class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-violet-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
                                 <i class="fas fa-hand-holding-usd mr-2"></i>
                                 Ajukan Penarikan
                             </button>
+
                         </div>
                     </form>
                 </div>
             </div>
+
+            <!-- Modal Konfirmasi Password -->
+            <div id="passwordModal"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-md">
+                    <h2 class="text-lg font-semibold mb-4">Masukkan Password untuk Konfirmasi</h2>
+                    <form action="{{ route('tarik.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id_hidden" id="user_id_hidden">
+                        <input type="hidden" name="jumlah_uang_hidden" id="jumlah_uang_hidden">
+                        <input type="hidden" name="catatan_hidden" id="catatan_hidden">
+
+                        <div class="mb-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" name="password" required
+                                class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-purple-300">
+                        </div>
+
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="hidePasswordModal()"
+                                class="px-4 py-2 bg-gray-300 rounded">Batal</button>
+                            <button type="submit"
+                                class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Konfirmasi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
             <!-- Riwayat Transaksi -->
             <div class="mt-12">
@@ -513,6 +521,25 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
 
     <!-- JavaScript -->
     <script>
+
+            function showPasswordModal() {
+        // Ambil nilai dari form utama
+        const userId = document.querySelector('select[name="user_id"]').value;
+        const jumlah = document.querySelector('input[name="jumlah_uang"]').value;
+        const catatan = document.querySelector('textarea[name="catatan"]').value;
+
+        // Masukkan ke input hidden di modal
+        document.getElementById('user_id_hidden').value = userId;
+        document.getElementById('jumlah_uang_hidden').value = jumlah;
+        document.getElementById('catatan_hidden').value = catatan;
+
+        // Tampilkan modal
+        document.getElementById('passwordModal').classList.remove('hidden');
+    }
+
+    function hidePasswordModal() {
+        document.getElementById('passwordModal').classList.add('hidden');
+    }
         // Tab switching functionality
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = {

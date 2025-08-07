@@ -38,6 +38,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/sampah/{id}', [SampahController::class, 'update'])->name('admin.sampah.update');
     Route::delete('/sampah/{id}', [SampahController::class, 'destroy'])->name('admin.sampah.destroy');
 
+
+    // manajemen setor & tarik
+     Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
+     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
+     Route::post('/setor-tunai', [SetorController::class, 'storeTunai'])->name('setor.tunai.store');
     // transaksi operasional
     Route::get('/transaksi-operasional', [TransaksiOperasionalController::class, 'index'])->name('admin.transaksi.index');
     Route::get('/transaksi-operasional/create', [TransaksiOperasionalController::class, 'create'])->name('admin.transaksi.create');
@@ -45,11 +50,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/transaksi-operasional/{transaksi}/edit', [TransaksiOperasionalController::class, 'edit'])->name('admin.transaksi.edit');
     Route::put('/transaksi-operasional/{transaksi}', [TransaksiOperasionalController::class, 'update'])->name('admin.transaksi.update');
     Route::delete('/transaksi-operasional/{transaksi}', [TransaksiOperasionalController::class, 'destroy'])->name('admin.transaksi.destroy');
-
-
-    // manajemen setor & tarik
-      Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
-     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
 });
 
 // ===========================

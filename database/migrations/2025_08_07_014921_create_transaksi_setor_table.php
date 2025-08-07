@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('transaksi_setor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('sampah_id')->constrained('sampah')->onDelete('cascade');
-            $table->decimal('berat', 8, 2); // dalam kg
+            $table->foreignId('sampah_id')->nullable()->constrained('sampah')->onDelete('cascade');
+            $table->decimal('berat', 8, 2)->nullable(); // dalam kg
             $table->decimal('total_harga', 12, 2);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamp('tanggal_setor')->useCurrent();
