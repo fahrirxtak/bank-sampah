@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Dashboard Bank Sampah') }}
+                @section('title', 'Dashboard')
             </h2>
             <div class="flex items-center space-x-4">
                 <div class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-full border border-gray-200">
