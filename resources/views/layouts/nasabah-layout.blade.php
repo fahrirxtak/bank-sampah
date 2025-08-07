@@ -195,18 +195,6 @@
 
                 <a href=""
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i class="fas fa-exchange-alt text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Transaksi Saya</span>
-                </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i class="fas fa-arrow-up text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Setor Sampah</span>
-                </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-arrow-down text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Tarik Saldo</span>
                 </a>
