@@ -197,7 +197,7 @@
                     <span class="sidebar-text">Dashboard</span>
                 </a>
 
-                <a href=""
+                <a href="{{ route('admin.transaksi.index') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-coins text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Transaksi</span>
@@ -209,20 +209,6 @@
                         class="fas fa-hand-holding text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Setoran</span>
                 </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i
-                        class="fas fa-money-bill-wave text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Pengeluaran</span>
-                </a>
-
-                <a href=""
-                    class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
-                    <i class="fas fa-wallet text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-                    <span class="sidebar-text">Saldo Admin</span>
-                </a>
-
 
                 <h3
                     class="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3 mt-4 px-3 sidebar-header-text">
@@ -289,6 +275,12 @@
                         class="w-40 sm:w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all duration-200 outline-none text-sm">
                     <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-sm"></i>
                 </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="text-sm font-medium text-gray-700 hidden md:inline-block">Saldo:</span>
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                    Rp {{ number_format(auth()->user()->saldo ?? 0, 0, ',', '.') }}
+                </span>
             </div>
             <button
                 class="relative p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors">
