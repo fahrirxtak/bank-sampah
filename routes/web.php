@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TransaksiOperasionalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HargaSampahController;
 use App\Http\Controllers\NasabahController;
+use App\Http\Controllers\RiwayatNasabahController;
 use Illuminate\Support\Facades\Route;
 
 // ===========================
@@ -48,8 +49,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
     // manajemen setor & tarik
-      Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
-     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
+    Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
+    Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
 });
 
 // ===========================
@@ -59,6 +60,9 @@ Route::middleware(['auth', 'role:nasabah'])->group(function () {
     Route::get('/nasabah/dashboard', function () {
         return view('nasabah.dashboard');
     })->name('nasabah.dashboard');
+
+    // Harga Sampah
+    Route::get('/nasabah/riwayat-transaksi', [RiwayatNasabahController::class, 'index'])->name('nasabah.riwayat.index');
 
     // Harga Sampah
     Route::get('/nasabah/harga-sampah', [HargaSampahController::class, 'index'])->name('harga.sampah');
