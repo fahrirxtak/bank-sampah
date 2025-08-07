@@ -48,7 +48,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
     // manajemen setor & tarik
-    Route::get('/setor', [SetorController::class, 'index'])->name('admin.setor.index');
+      Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
+     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
 });
 
 // ===========================

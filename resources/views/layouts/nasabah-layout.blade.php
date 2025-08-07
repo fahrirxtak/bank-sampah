@@ -215,7 +215,7 @@
                     <span class="sidebar-text">Riwayat Transaksi</span>
                 </a>
 
-                <a href=""
+                <a href="{{ route('nasabah.saldo') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-wallet text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Saldo Saya</span>
