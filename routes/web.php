@@ -38,7 +38,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/sampah/{id}', [SampahController::class, 'destroy'])->name('admin.sampah.destroy');
 
     // manajemen setor & tarik
-     Route::get('/setor', [SetorController::class, 'index'])->name('admin.setor.index');
+     Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
+     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
+
+
 });
 
 // ===========================

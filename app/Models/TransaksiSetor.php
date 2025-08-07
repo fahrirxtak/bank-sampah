@@ -22,9 +22,11 @@ class TransaksiSetor extends Model
         'berat',
         'total_harga',
         'status',
-        'bukti_foto',
-        'tanggal_setor'
+        'tanggal_setor',
+        'created_at',
+        'updated_at'
     ];
+
 
     /**
      * The attributes that should be cast.

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('berat', 8, 2); // dalam kg
             $table->decimal('total_harga', 12, 2);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->string('bukti_foto')->nullable();
             $table->timestamp('tanggal_setor')->useCurrent();
             $table->timestamps();
         });
