@@ -18,6 +18,13 @@ class SetorController extends Controller
     {
         $users = User::where('role', 'nasabah')->get();
         $sampahs = Sampah::all();
+
+        $ajuan = TransaksiTarik::with('user')
+            ->where('status', 'pending') // atau 'menunggu', sesuai isi databasenya
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+
         $transaksi = TransaksiSetor::with(['user', 'sampah'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
@@ -25,6 +32,7 @@ class SetorController extends Controller
 
         return view('admin.setor.index', compact('users', 'ajuan', 'sampahs', 'transaksi'));
     }
+
 
     public function store(Request $request)
     {
@@ -76,31 +84,14 @@ class SetorController extends Controller
             'jumlah_uang' => 'required|numeric|min:1000',
             'catatan' => 'nullable|string',
         ]);
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'jumlah_uang' => 'required|numeric|min:1000',
-            'catatan' => 'nullable|string',
-        ]);
 
-        // Ambil user
-        $user = User::findOrFail($request->user_id);
         // Ambil user
         $user = User::findOrFail($request->user_id);
 
         // Tambahkan saldo
         $user->saldo += $request->jumlah_uang;
         $user->save();
-        // Tambahkan saldo
-        $user->saldo += $request->jumlah_uang;
-        $user->save();
 
-        // Simpan riwayat transaksi setor tunai
-        TransaksiSetor::create([
-            'user_id' => $user->id,
-            'total_harga' => $request->jumlah_uang,
-            'catatan' => $request->catatan,
-        ]);
         // Simpan riwayat transaksi setor tunai
         TransaksiSetor::create([
             'user_id' => $user->id,
@@ -114,10 +105,10 @@ class SetorController extends Controller
     public function Tarik(Request $request)
     {
         $request->validate([
-            'user_id_hidden' => 'required|exists:users,id',
+            'user_id_hidden'     => 'required|exists:users,id',
             'jumlah_uang_hidden' => 'required|numeric|min:10000',
-            'catatan_hidden' => 'required|string',
-            'password' => 'required|string',
+            'catatan_hidden'     => 'required|string',
+            'password'           => 'required|string',
         ]);
 
         $user = User::find($request->user_id_hidden);
@@ -129,15 +120,40 @@ class SetorController extends Controller
 
         // Simpan transaksi tarik
         TransaksiTarik::create([
-            'user_id' => $user->id,
-            'jumlah_tarik' => $request->jumlah_uang_hidden,
-            'status' => 'menunggu',
+            'user_id'       => $user->id,
+            'jumlah_tarik'  => $request->jumlah_uang_hidden,
+            'status'        => 'menunggu',
             'tanggal_tarik' => now(),
         ]);
 
-        // Update saldo jika perlu:
+        // Update saldo jika memang langsung dipotong
         $user->decrement('saldo', $request->jumlah_uang_hidden);
 
-    return redirect()->back()->with('success', 'Penarikan berhasil diajukan.');
-}
+        return redirect()->back()->with('success', 'Penarikan berhasil diajukan.');
+    }
+
+    public function konfirmasi($id)
+    {
+        $Penarikan = TransaksiTarik::findOrFail($id);
+
+        if ($Penarikan->status !== 'pending') {
+            return redirect()->back()->with('error', 'Penarikan sudah dikonfirmasi.');
+        }
+
+        $user = $Penarikan->user;
+
+        if ($user->saldo < $Penarikan->jumlah_tarik) {
+            return redirect()->back()->with('error', 'Saldo tidak mencukupi.');
+        }
+
+        // Kurangi saldo user
+        $user->saldo -= $Penarikan->jumlah_tarik;
+        $user->save();
+
+        // Update status penarikan
+        $Penarikan->status = 'approved';
+        $Penarikan->save();
+
+        return redirect()->back()->with('success', 'Penarikan dikonfirmasi dan saldo dikurangi.');
+    }
 }

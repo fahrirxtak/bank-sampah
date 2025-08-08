@@ -134,10 +134,6 @@
                             </div>
                         </div>
 
-
-
-
-
                         <!-- Preview Harga -->
                         <div id="previewHarga" class="hidden">
                             <div
@@ -481,7 +477,7 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                                                                     action="{{ route('admin.penarikan.konfirmasi', $item->id) }}"
                                                                     class="inline">
                                                                     @csrf
-                                                                    @method('PATCH')
+                                                                    @method('POST')
                                                                     <input type="hidden" name="status"
                                                                         value="approved">
                                                                     <button type="submit"
