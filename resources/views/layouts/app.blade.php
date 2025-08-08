@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar Area Kerja</title>
+    <title>Bank Sampah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
+    <link rel="icon" type="image/png" href="{{ asset('Logo.png') }}">
+    <title>{{ config('app.name', 'Bank Sampah') }}</title>
     <script>
         tailwind.config = {
             theme: {
@@ -172,14 +173,17 @@
            z-[9998] transition-all duration-300 ease-in-out transform -translate-x-full lg:translate-x-0">
 
         <!-- Header -->
-        <div class="p-4 border-b border-white/10 flex items-center justify-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center glass-effect">
-                    <i class="fas fa-recycle text-lg"></i>
+        <div class="p-4 border-b border-white/10">
+            <div class="flex items-center gap-4 justify-center">
+                <!-- Logo Container -->
+                <div class="w-16 h-16 bg-white/20 rounded-full overflow-hidden flex-shrink-0 glass-effect">
+                    <img src="{{ asset('Logo.png') }}" alt="Bank Sampah Logo" class="w-full h-full object-cover">
                 </div>
-                <div class="sidebar-header-text">
-                    <h1 class="text-xl font-bold">Bank Sampah</h1>
-                    <p class="text-xs text-white/70">Management Panel</p>
+
+                <!-- Text Content -->
+                <div class="text-center">
+                    <h1 class="text-lg font-bold text-white tracking-tight">Bank Sampah</h1>
+                    <p class="text-xs text-white/70 mt-1">Nasabah Panel</p>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div class="flex items-center space-x-4">
                 <div class="relative">
@@ -78,18 +79,25 @@
                             <!-- Pilih User yang Setor -->
                             <div class="space-y-3">
                                 <label class="flex items-center text-sm font-semibold text-gray-700">
-                                    <i class="fas fa-user mr-2 text-green-600"></i>
-                                    User yang Setor <span class="text-red-500 ml-1">*</span>
+                                    <i class="fas fa-user mr-2 text-blue-600"></i>
+                                    nasabah yang Setor <span class="text-red-500 ml-1">*</span>
                                 </label>
-                                <select name="user_id"
-                                    class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
-                                    required>
-                                    <option value="">Pilih User</option>
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+
+                                <div class="searchable-select">
+                                    <input type="text" id="searchableUserInputSetorSampah"
+                                        class="search-input w-full rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3"
+                                        placeholder="Pilih atau ketik nama user..." autocomplete="off"
+                                        onfocus="showUserDropdown('searchableUserInputSetorSampah', 'userDropdownOptionsSetorSampah')"
+                                        oninput="filterUserOptions('searchableUserInputSetorSampah', 'userDropdownOptionsSetorSampah', 'selectedUserIdSetorSampah')"
+                                        onblur="hideUserDropdownDelayed('userDropdownOptionsSetorSampah')">
+
+                                    <div id="userDropdownOptionsSetorSampah" class="dropdown-options">
+                                        <!-- Options akan diisi otomatis dari data Laravel -->
+                                    </div>
+
+                                    <!-- Hidden input untuk form submission -->
+                                    <input type="hidden" name="user_id" id="selectedUserIdSetorSampah" required>
+                                </div>
                             </div>
 
                             <!-- Jenis Sampah -->
@@ -184,15 +192,22 @@
                                 <i class="fas fa-user mr-2 text-blue-600"></i>
                                 User yang Setor <span class="text-red-500 ml-1">*</span>
                             </label>
-                            <select name="user_id"
-                                class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
-                                required>
-                                <option value="">Pilih User</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+
+                            <div class="searchable-select">
+                                <input type="text" id="searchableUserInputSetorTunai"
+                                    class="search-input w-full rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3"
+                                    placeholder="Pilih atau ketik nama user..." autocomplete="off"
+                                    onfocus="showUserDropdown('searchableUserInputSetorTunai', 'userDropdownOptionsSetorTunai')"
+                                    oninput="filterUserOptions('searchableUserInputSetorTunai', 'userDropdownOptionsSetorTunai', 'selectedUserIdSetorTunai')"
+                                    onblur="hideUserDropdownDelayed('userDropdownOptionsSetorTunai')">
+
+                                <div id="userDropdownOptionsSetorTunai" class="dropdown-options">
+                                    <!-- Options akan diisi otomatis dari data Laravel -->
+                                </div>
+
+                                <!-- Hidden input untuk form submission -->
+                                <input type="hidden" name="user_id" id="selectedUserIdSetorTunai" required>
+                            </div>
                         </div>
 
                         <div class="space-y-3">
@@ -248,16 +263,22 @@
                                 <i class="fas fa-user mr-2 text-blue-600"></i>
                                 User yang Setor <span class="text-red-500 ml-1">*</span>
                             </label>
-                            <select name="user_id"
-                                class="w-full rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 p-3"
-                                required>
-                                <option value="">Pilih User</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" data-saldo="{{ $user->saldo }}">
-                                        {{ $user->name }} (Saldo: Rp {{ number_format($user->saldo, 0, ',', '.') }})
-                                    </option>
-                                @endforeach
-                            </select>
+
+                            <div class="searchable-select">
+                                <input type="text" id="searchableUserInputTarikTunai"
+                                    class="search-input w-full rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200 p-3"
+                                    placeholder="Pilih atau ketik nama user..." autocomplete="off"
+                                    onfocus="showUserDropdown('searchableUserInputTarikTunai', 'userDropdownOptionsTarikTunai')"
+                                    oninput="filterUserOptions('searchableUserInputTarikTunai', 'userDropdownOptionsTarikTunai', 'selectedUserIdTarikTunai')"
+                                    onblur="hideUserDropdownDelayed('userDropdownOptionsTarikTunai')">
+
+                                <div id="userDropdownOptionsTarikTunai" class="dropdown-options">
+                                    <!-- Options akan diisi otomatis dari data Laravel -->
+                                </div>
+
+                                <!-- Hidden input untuk form submission -->
+                                <input type="hidden" name="user_id" id="selectedUserIdTarikTunai" required>
+                            </div>
                         </div>
 
                         <!-- Jumlah Penarikan -->
@@ -322,17 +343,6 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                     </div>
                 </div>
             </div>
-
-            <script>
-                function showPasswordModal() {
-                    document.getElementById('passwordModal').classList.remove('hidden');
-                }
-
-                function hidePasswordModal() {
-                    document.getElementById('passwordModal').classList.add('hidden');
-                }
-            </script>
-
 
             <div id="formKonfirmasiTarikTunai"
                 class="form-container min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8 hidden">
@@ -734,24 +744,39 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
 
                     <div class="p-6">
                         <!-- Filter & Search -->
-                        <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                            <select
+                        <form method="GET" class="flex flex-col sm:flex-row gap-4 mb-6">
+                            <select name="tipe"
                                 class="px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                                 <option value="">Semua Transaksi</option>
-                                <option value="setor_sampah">Setor Sampah</option>
-                                <option value="setor_tunai">Setor Tunai</option>
-                                <option value="tarik_tunai">Tarik Tunai</option>
+                                <option value="setor" {{ request('tipe') == 'setor' ? 'selected' : '' }}>Setor
+                                </option>
+                                <option value="tarik" {{ request('tipe') == 'tarik' ? 'selected' : '' }}>Tarik
+                                </option>
+                                <option value="operasional" {{ request('tipe') == 'operasional' ? 'selected' : '' }}>
+                                    Operasional</option>
                             </select>
-                            <select
+                            <select name="kategori"
                                 class="px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                                <option value="">Semua Status</option>
-                                <option value="pending">Menunggu</option>
-                                <option value="approved">Disetujui</option>
-                                <option value="rejected">Ditolak</option>
+                                <option value="">Semua Kategori</option>
+                                <option value="pemasukan" {{ request('kategori') == 'pemasukan' ? 'selected' : '' }}>
+                                    Pemasukan</option>
+                                <option value="pengeluaran"
+                                    {{ request('kategori') == 'pengeluaran' ? 'selected' : '' }}>Pengeluaran</option>
                             </select>
-                            <input type="search" placeholder="Cari transaksi..."
+                            <input type="search" name="search" placeholder="Cari transaksi..."
+                                value="{{ request('search') }}"
                                 class="px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-1">
-                        </div>
+                            <button type="submit"
+                                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+                            @if (request('tipe') || request('kategori') || request('search'))
+                                <a href="{{ url()->current() }}"
+                                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                    <i class="fas fa-times"></i> Reset
+                                </a>
+                            @endif
+                        </form>
 
                         <!-- Tabel Desktop -->
                         <div class="hidden md:block overflow-x-auto">
@@ -763,108 +788,57 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                                             Tanggal</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Jenis</th>
+                                            Tipe</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Detail</th>
+                                            Kategori</th>
+                                        <th
+                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Keterangan</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Jumlah</th>
-                                        <th
-                                            class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200" id="transactionTableBody">
-                                    @forelse($transaksi as $item)
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse($riwayatTransaksi as $item)
                                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $item->created_at->format('d M Y H:i') }}
+                                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y H:i') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                @if ($item->jenis_transaksi == 'setor_sampah')
+                                                @if ($item->tipe == 'setor')
                                                     <span
                                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        <i class="fas fa-recycle mr-1"></i>
-                                                        Setor Sampah
-                                                    </span>
-                                                @elseif($item->jenis_transaksi == 'setor_tunai')
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                        <i class="fas fa-coins mr-1"></i>
-                                                        Setor Tunai
-                                                    </span>
-                                                @else
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                                        <i class="fas fa-money-bill-wave mr-1"></i>
-                                                        Tarik Tunai
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-900">
-                                                @if ($item->jenis_transaksi == 'setor_sampah')
-                                                    <div class="font-medium">
-                                                        {{ $item->sampah->nama ?? 'Jenis Sampah' }}</div>
-                                                    <div class="text-xs text-gray-500">
-                                                        {{ number_format($item->berat, 2) }} kg ×
-                                                        Rp{{ number_format($item->harga_per_kg, 0, ',', '.') }}
-                                                    </div>
-                                                @else
-                                                    <div class="font-medium">
-                                                        {{ $item->catatan ?? ($item->jenis_transaksi == 'setor_tunai' ? 'Setoran Tunai' : 'Penarikan Tunai') }}
-                                                    </div>
-                                                    @if ($item->jenis_transaksi == 'tarik_tunai' && $item->metode_penarikan)
-                                                        <div class="text-xs text-gray-500">
-                                                            Metode:
-                                                            {{ $item->metode_penarikan == 'tunai' ? 'Ambil di Lokasi' : 'Transfer Bank' }}
-                                                        </div>
-                                                    @endif
-                                                @endif
-                                            </td>
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm font-semibold
-                                            @if (in_array($item->jenis_transaksi, ['setor_sampah', 'setor_tunai'])) text-green-600 @else text-red-600 @endif">
-                                                @if (in_array($item->jenis_transaksi, ['setor_sampah', 'setor_tunai']))
-                                                    <span class="inline-flex items-center">
                                                         <i class="fas fa-arrow-up mr-1"></i>
-                                                        +
-                                                        Rp{{ number_format($item->jenis_transaksi == 'setor_sampah' ? $item->total_harga : $item->jumlah_uang, 0, ',', '.') }}
+                                                        Setor
                                                     </span>
-                                                @else
-                                                    <span class="inline-flex items-center">
-                                                        <i class="fas fa-arrow-down mr-1"></i>
-                                                        - Rp{{ number_format($item->jumlah_uang, 0, ',', '.') }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                @if ($item->status == 'approved')
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        <i class="fas fa-check-circle mr-1"></i>
-                                                        Disetujui
-                                                    </span>
-                                                    @if ($item->admin)
-                                                        <div class="text-xs text-gray-500 mt-1">Oleh:
-                                                            {{ $item->admin->name }}</div>
-                                                    @endif
-                                                @elseif($item->status == 'rejected')
+                                                @elseif($item->tipe == 'tarik')
                                                     <span
                                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                        <i class="fas fa-times-circle mr-1"></i>
-                                                        Ditolak
+                                                        <i class="fas fa-arrow-down mr-1"></i>
+                                                        Tarik
                                                     </span>
-                                                    @if ($item->alasan_tolak)
-                                                        <div class="text-xs text-gray-500 mt-1">
-                                                            {{ $item->alasan_tolak }}</div>
-                                                    @endif
                                                 @else
                                                     <span
-                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                        <i class="fas fa-clock mr-1"></i>
-                                                        Menunggu
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        <i class="fas fa-cog mr-1"></i>
+                                                        Operasional
                                                     </span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ ucfirst($item->kategori) }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900">
+                                                {{ $item->keterangan }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm font-semibold @if ($item->kategori == 'pemasukan') text-green-600 @else text-red-600 @endif">
+                                                @if ($item->kategori == 'pemasukan')
+                                                    + Rp{{ number_format($item->jumlah, 0, ',', '.') }}
+                                                @else
+                                                    - Rp{{ number_format($item->jumlah, 0, ',', '.') }}
                                                 @endif
                                             </td>
                                         </tr>
@@ -883,49 +857,132 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                         </div>
 
                         <!-- Cards Mobile -->
-                        <div class="md:hidden space-y-4" id="transactionCards">
-                            <!-- Cards akan diisi oleh JavaScript -->
+                        <div class="md:hidden space-y-4">
+                            @forelse($riwayatTransaksi as $item)
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="text-sm text-gray-500">
+                                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y H:i') }}
+                                            </p>
+                                            <h4 class="font-medium mt-1">{{ $item->keterangan }}</h4>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                @if ($item->tipe == 'setor') bg-green-100 text-green-800
+                                @elseif($item->tipe == 'tarik') bg-red-100 text-red-800
+                                @else bg-blue-100 text-blue-800 @endif">
+                                            {{ ucfirst($item->tipe) }}
+                                        </span>
+                                    </div>
+                                    <div class="mt-3 flex justify-between items-center">
+                                        <span class="text-sm text-gray-500">{{ ucfirst($item->kategori) }}</span>
+                                        <span
+                                            class="font-semibold @if ($item->kategori == 'pemasukan') text-green-600 @else text-red-600 @endif">
+                                            @if ($item->kategori == 'pemasukan')
+                                                + Rp{{ number_format($item->jumlah, 0, ',', '.') }}
+                                            @else
+                                                - Rp{{ number_format($item->jumlah, 0, ',', '.') }}
+                                            @endif
+                                        </span>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center py-8">
+                                    <i class="fas fa-inbox text-4xl text-gray-400 mb-3"></i>
+                                    <p class="text-gray-500">Belum ada riwayat transaksi</p>
+                                </div>
+                            @endforelse
                         </div>
 
-                        <!-- Pagination -->
-                        @if ($transaksi->hasPages())
-                            <div class="mt-6 flex items-center justify-between">
-                                <div class="text-sm text-gray-700">
-                                    Menampilkan <span class="font-medium">{{ $transaksi->firstItem() }}</span> sampai
-                                    <span class="font-medium">{{ $transaksi->lastItem() }}</span> dari
-                                    <span class="font-medium">{{ $transaksi->total() }}</span> transaksi
-                                </div>
-                                <div class="flex space-x-1">
-                                    {{ $transaksi->links() }}
+                        <!-- Pagination dengan Style Custom -->
+                        @if ($riwayatTransaksi->hasPages())
+                            <div class="mt-6">
+                                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                    <div class="text-sm text-gray-600">
+                                        Menampilkan <span
+                                            class="font-medium">{{ $riwayatTransaksi->firstItem() }}</span>
+                                        sampai <span class="font-medium">{{ $riwayatTransaksi->lastItem() }}</span>
+                                        dari
+                                        <span class="font-medium">{{ $riwayatTransaksi->total() }}</span> transaksi
+                                    </div>
+
+                                    <div class="flex flex-wrap gap-1">
+                                        {{ $riwayatTransaksi->withQueryString()->onEachSide(1)->links('pagination::tailwind') }}
+                                    </div>
                                 </div>
                             </div>
                         @endif
                     </div>
                 </div>
             </div>
+
+            <!-- Tambahkan style untuk pagination jika belum ada -->
+            <style>
+                .pagination {
+                    display: flex;
+                    gap: 0.5rem;
+                    flex-wrap: wrap;
+                }
+
+                .page-item {
+                    list-style: none;
+                }
+
+                .page-link {
+                    display: block;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid #d1d5db;
+                    border-radius: 0.375rem;
+                    color: #4b5563;
+                    text-decoration: none;
+                    transition: all 0.2s;
+                }
+
+                .page-link:hover {
+                    background-color: #f3f4f6;
+                }
+
+                .page-item.active .page-link {
+                    background-color: #3b82f6;
+                    color: white;
+                    border-color: #3b82f6;
+                }
+
+                .page-item.disabled .page-link {
+                    color: #9ca3af;
+                    pointer-events: none;
+                    background-color: #f9fafb;
+                }
+            </style>
         </div>
     </div>
-
+    <!-- JS Select2 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- JavaScript -->
     <script>
         function showPasswordModal() {
-            // Ambil nilai dari form utama
-            const userId = document.querySelector('select[name="user_id"]').value;
-            const jumlah = document.querySelector('input[name="jumlah_uang"]').value;
+            const userId = document.getElementById('selectedUserIdTarikTunai').value;
+            const jumlah = parseInt(document.querySelector('input[name="jumlah_uang"]').value, 10) || 0;
             const catatan = document.querySelector('textarea[name="catatan"]').value;
 
-            // Masukkan ke input hidden di modal
-            document.getElementById('user_id_hidden').value = userId;
-            document.getElementById('jumlah_uang_hidden').value = jumlah;
-            document.getElementById('catatan_hidden').value = catatan;
+            if (!userId) {
+                alert('Silakan pilih user terlebih dahulu.');
+                return;
+            }
 
-            // Tampilkan modal
+       
+
             document.getElementById('passwordModal').classList.remove('hidden');
         }
+
 
         function hidePasswordModal() {
             document.getElementById('passwordModal').classList.add('hidden');
         }
+
+
         // Tab switching functionality
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = {
@@ -1011,5 +1068,253 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                 }, 3000);
             });
         });
+
+
+        // Data users dari Laravel (ganti dengan @json($users))
+        // Data users dari Laravel
+        const allUsers = @json($users);
+
+        // Fungsi untuk menampilkan dropdown
+        function showUserDropdown(inputId, dropdownId) {
+            document.getElementById(dropdownId).classList.add('show');
+            populateUserDropdown(inputId, dropdownId);
+        }
+
+        // Fungsi untuk menyembunyikan dropdown dengan delay
+        function hideUserDropdownDelayed(dropdownId) {
+            setTimeout(() => {
+                document.getElementById(dropdownId).classList.remove('show');
+            }, 200);
+        }
+
+        // Fungsi untuk mengisi dropdown dengan filtering
+        function populateUserDropdown(inputId, dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const searchTerm = document.getElementById(inputId).value.toLowerCase();
+
+            // Filter users berdasarkan pencarian
+            const filteredUsers = allUsers.filter(user =>
+                user.name.toLowerCase().includes(searchTerm)
+            );
+
+            dropdown.innerHTML = '';
+
+            if (filteredUsers.length === 0) {
+                dropdown.innerHTML = '<div class="no-options">🔍 Tidak ada user ditemukan</div>';
+                return;
+            }
+
+            // Buat option untuk setiap user
+            filteredUsers.forEach(user => {
+                const option = document.createElement('div');
+                option.className = 'dropdown-option';
+
+                // Tambahkan avatar dan nama
+                const avatar = document.createElement('div');
+                avatar.className = 'user-avatar';
+                avatar.textContent = user.name.charAt(0).toUpperCase();
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = user.name;
+
+                option.appendChild(avatar);
+                option.appendChild(nameSpan);
+
+                // Handle click
+                option.onclick = () => selectUser(user.id, user.name, inputId, dropdownId);
+
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Fungsi untuk memilih user
+        function selectUser(id, name, inputId, dropdownId) {
+            const input = document.getElementById(inputId);
+            const hiddenInputId = 'selectedUserId' + inputId.replace('searchableUserInput', '');
+            const hiddenInput = document.getElementById(hiddenInputId);
+
+            // Set values
+            input.value = name;
+            input.classList.add('has-value');
+            hiddenInput.value = id;
+
+            // Hide dropdown
+            document.getElementById(dropdownId).classList.remove('show');
+        }
+
+        // Fungsi untuk memfilter options saat mengetik
+        function filterUserOptions(inputId, dropdownId, hiddenInputId) {
+            const input = document.getElementById(inputId);
+            const hiddenInput = document.getElementById(hiddenInputId);
+
+            // Reset selection jika user mengubah input
+            if (input.value !== input.dataset.selectedName) {
+                hiddenInput.value = '';
+                input.classList.remove('has-value');
+            }
+
+            populateUserDropdown(inputId, dropdownId);
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const searchableSelects = document.querySelectorAll('.searchable-select');
+
+            searchableSelects.forEach(select => {
+                if (!select.contains(event.target)) {
+                    const dropdownId = select.querySelector('.dropdown-options').id;
+                    document.getElementById(dropdownId).classList.remove('show');
+                }
+            });
+        });
     </script>
+
+    <!-- JS Select2 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#userSelect').select2({
+                placeholder: "Ketik nama user...",
+                allowClear: true,
+                minimumInputLength: 1, // option muncul setelah ketik minimal 1 huruf
+                width: '100%',
+                language: {
+                    inputTooShort: function() {
+                        return "Ketik minimal 1 huruf untuk mencari...";
+                    },
+                    noResults: function() {
+                        return "User tidak ditemukan";
+                    }
+                }
+            });
+
+            // Biar select2 tampilannya selaras sama rounded form
+            $('.select2-container--default .select2-selection--single').css({
+                'height': '48px',
+                'border-radius': '0.75rem',
+                'border': '2px solid #e5e7eb', // tailwind gray-200
+                'padding': '8px 12px'
+            });
+        });
+    </script>
+
+    <style>
+        /* CSS untuk Searchable Select */
+        .searchable-select {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .search-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px #bbf7d0;
+        }
+
+        .search-input.has-value {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-options.show {
+            display: block;
+        }
+
+        .dropdown-option {
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-option:hover {
+            background-color: #f9fafb;
+            transform: translateX(2px);
+        }
+
+        .dropdown-option.selected {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .dropdown-option:last-child {
+            border-bottom: none;
+        }
+
+        .no-options {
+            padding: 12px;
+            color: #6b7280;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .user-avatar {
+            width: 24px;
+            height: 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* Loading state */
+        .search-input.loading {
+            background-image: url("data:image/svg+xml,%3csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M10 3V6M10 14V17M17 10H14M6 10H3M15.364 4.636L13.243 6.757M6.757 13.243L4.636 15.364M15.364 15.364L13.243 13.243M6.757 6.757L4.636 4.636' stroke='%2310b981' stroke-width='2' stroke-linecap='round'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .dropdown-options {
+                max-height: 150px;
+            }
+        }
+    </style>
 </x-app-layout>

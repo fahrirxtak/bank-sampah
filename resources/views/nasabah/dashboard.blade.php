@@ -178,26 +178,42 @@
                         </div>
                         <div class="space-y-4">
                             @forelse($transaksi as $item)
+                                @php
+                                    $isSetorTunai = Str::contains(strtolower($item->keterangan), 'setor tunai');
+                                    $isPemasukan = $item->tipe === 'pemasukan';
+                                @endphp
+
                                 <!-- Item -->
                                 <div
                                     class="flex items-start space-x-3 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
                                     <div
                                         class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-1
-                        {{ $item->tipe === 'pemasukan' ? 'bg-green-100' : 'bg-blue-100' }}">
-                                        <i
-                                            class="fas {{ $item->tipe === 'pemasukan' ? 'fa-recycle text-green-600' : 'fa-money-bill-wave text-blue-600' }} text-sm"></i>
+                {{ $isPemasukan ? 'bg-green-100' : 'bg-blue-100' }}">
+                                        @if ($isPemasukan)
+                                            @if ($isSetorTunai)
+                                                <i class="fas fa-money-bill-wave text-green-600 text-sm"></i>
+                                            @else
+                                                <i class="fas fa-recycle text-green-600 text-sm"></i>
+                                            @endif
+                                        @else
+                                            <i class="fas fa-hand-holding-usd text-blue-600 text-sm"></i>
+                                        @endif
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-sm font-medium text-gray-800">
-                                            {{ $item->tipe === 'pemasukan' ? 'Setoran sampah' : 'Penarikan saldo' }}
+                                            @if ($isPemasukan)
+                                                {{ $isSetorTunai ? 'Setor tunai' : 'Setoran sampah' }}
+                                            @else
+                                                Penarikan saldo
+                                            @endif
                                         </p>
                                         <p class="text-xs text-gray-500">{{ $item->keterangan }}</p>
                                         <p class="text-xs text-gray-400 mt-1">{{ $item->created_at->diffForHumans() }}
                                         </p>
                                     </div>
                                     <div
-                                        class="text-sm font-semibold {{ $item->tipe === 'pemasukan' ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ $item->tipe === 'pemasukan' ? '+' : '-' }}Rp{{ number_format($item->jumlah, 0, ',', '.') }}
+                                        class="text-sm font-semibold {{ $isPemasukan ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ $isPemasukan ? '+' : '-' }}Rp{{ number_format($item->jumlah, 0, ',', '.') }}
                                     </div>
                                 </div>
                             @empty
