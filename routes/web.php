@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\NasabahController as AdminNasabahController;
-use App\Http\Controllers\Admin\SampahController;
-use App\Http\Controllers\Admin\SetorController;
-use App\Http\Controllers\Admin\TransaksiOperasionalController;
-use App\Http\Controllers\DashboardNasabahController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HargaSampahController;
-use App\Http\Controllers\NasabahController;
-use App\Http\Controllers\RiwayatNasabahController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NasabahController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\SetorController;
+use App\Http\Controllers\HargaSampahController;
+use App\Http\Controllers\Admin\SampahController;
+use App\Http\Controllers\RiwayatNasabahController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\DashboardNasabahController;
+use App\Http\Controllers\Admin\TransaksiOperasionalController;
+use App\Http\Controllers\Admin\NasabahController as AdminNasabahController;
 
 // ===========================
 // ADMIN ROUTES
@@ -91,7 +92,21 @@ Route::middleware(['auth', 'role:nasabah'])->group(function () {
 // DEFAULT ROUTE
 // ===========================
 Route::get('/', function () {
-    return view('auth.login');
+    // Kalau belum login, tampilkan halaman login
+    if (!Auth::check()) {
+        return view('auth.login');
+    }
+
+    // Kalau sudah login, cek rolenya
+    $user = Auth::user();
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard'); // route untuk dashboard admin
+    } elseif ($user->role === 'nasabah') {
+        return redirect()->route('nasabah.dashboard'); // route untuk dashboard nasabah
+    }
+
+    // Kalau role tidak dikenali
+    abort(403, 'Role tidak dikenali.');
 });
 
 // ===========================
