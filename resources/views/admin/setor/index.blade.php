@@ -972,8 +972,6 @@ Untuk tunai: tulis alasan penarikan" required></textarea>
                 return;
             }
 
-       
-
             document.getElementById('passwordModal').classList.remove('hidden');
         }
 

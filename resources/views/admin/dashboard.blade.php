@@ -125,7 +125,7 @@
                                     <i class="fas fa-coins text-xl"></i>
                                 </div>
                             </div>
-                            {{-- <p class="text-3xl font-bold mb-2">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</p> --}}
+                            <p class="text-3xl font-bold mb-2">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</p>
                             <div class="flex items-center text-purple-100 text-sm">
                                 <i class="fas fa-arrow-up mr-1"></i>
                                 <span>+25% dari target</span>

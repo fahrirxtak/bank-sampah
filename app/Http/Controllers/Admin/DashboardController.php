@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\RiwayatTransaksi;
 use App\Models\TransaksiOperasional;
 use App\Models\TransaksiSetor;
 use App\Models\User;
@@ -18,6 +19,10 @@ class DashboardController extends Controller
 
         // Total nasabah aktif
         $nasabahAktif = User::where('role', 'nasabah')->count();
+
+        // totalPendapatan
+        $totalPendapatan = RiwayatTransaksi::where('kategori', 'pemasukan')->sum('jumlah');
+
 
         // ================================
         // 📊 Data untuk Chart Bulanan
@@ -80,6 +85,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact(
             'totalSampah',
             'nasabahAktif',
+            'totalPendapatan',
             'labelsBulanan',
             'dataBulanan',
             'jenisLabels',
