@@ -80,10 +80,10 @@
                                     <i class="fas fa-trash text-xl"></i>
                                 </div>
                             </div>
-                            <p class="text-3xl font-bold mb-2">125 Kg</p>
+                            <p class="text-3xl font-bold mb-2">{{ $totalSetoran }} Kg</p>
                             <div class="flex items-center text-green-100 text-sm">
                                 <i class="fas fa-arrow-up mr-1"></i>
-                                <span>+10 Kg bulan ini</span>
+                                <span>+{{ $setoranBulanIni }} Kg bulan ini</span>
                             </div>
                         </div>
                     </div>
@@ -100,10 +100,10 @@
                                     <i class="fas fa-wallet text-xl"></i>
                                 </div>
                             </div>
-                            <p class="text-3xl font-bold mb-2">Rp1.250.000</p>
+                            <p class="text-3xl font-bold mb-2">Rp{{ number_format($saldo, 0, ',', '.') }}</p>
                             <div class="flex items-center text-blue-100 text-sm">
                                 <i class="fas fa-arrow-up mr-1"></i>
-                                <span>+Rp150k bulan ini</span>
+                                <span>+Rp{{ number_format($saldoBulanIni, 0, ',', '.') }} bulan ini</span>
                             </div>
                         </div>
                     </div>
@@ -122,10 +122,10 @@
                                     <i class="fas fa-arrow-down text-xl"></i>
                                 </div>
                             </div>
-                            <p class="text-3xl font-bold mb-2">Rp500.000</p>
+                            <p class="text-3xl font-bold mb-2">Rp{{ number_format($totalTarikan, 0, ',', '.') }}</p>
                             <div class="flex items-center text-purple-100 text-sm">
                                 <i class="fas fa-arrow-down mr-1"></i>
-                                <span>2 kali bulan ini</span>
+                                <span>{{ $tarikanBulanIni }} kali bulan ini</span>
                             </div>
                         </div>
                     </div>
@@ -171,56 +171,38 @@
                     <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-lg font-semibold text-gray-800">Transaksi Terakhir</h3>
-                            <a href=""
+                            <a href="{{ route('nasabah.riwayat.index') }}"
                                 class="text-sm text-green-600 hover:text-green-800 font-medium transition-colors">
                                 Lihat Semua
                             </a>
                         </div>
                         <div class="space-y-4">
-                            <!-- Item -->
-                            <div
-                                class="flex items-start space-x-3 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
+                            @forelse($transaksi as $item)
+                                <!-- Item -->
                                 <div
-                                    class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <i class="fas fa-recycle text-green-600 text-sm"></i>
+                                    class="flex items-start space-x-3 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
+                                    <div
+                                        class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-1
+                        {{ $item->tipe === 'pemasukan' ? 'bg-green-100' : 'bg-blue-100' }}">
+                                        <i
+                                            class="fas {{ $item->tipe === 'pemasukan' ? 'fa-recycle text-green-600' : 'fa-money-bill-wave text-blue-600' }} text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-800">
+                                            {{ $item->tipe === 'pemasukan' ? 'Setoran sampah' : 'Penarikan saldo' }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">{{ $item->keterangan }}</p>
+                                        <p class="text-xs text-gray-400 mt-1">{{ $item->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="text-sm font-semibold {{ $item->tipe === 'pemasukan' ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ $item->tipe === 'pemasukan' ? '+' : '-' }}Rp{{ number_format($item->jumlah, 0, ',', '.') }}
+                                    </div>
                                 </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Setoran sampah</p>
-                                    <p class="text-xs text-gray-500">Plastik: 5kg, Kertas: 3kg</p>
-                                    <p class="text-xs text-gray-400 mt-1">2 hari yang lalu</p>
-                                </div>
-                                <div class="text-sm text-green-600 font-semibold">+Rp45k</div>
-                            </div>
-
-                            <!-- Item -->
-                            <div
-                                class="flex items-start space-x-3 p-3 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
-                                <div
-                                    class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <i class="fas fa-money-bill-wave text-blue-600 text-sm"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Penarikan saldo</p>
-                                    <p class="text-xs text-gray-500">Transfer ke BCA •••• 1234</p>
-                                    <p class="text-xs text-gray-400 mt-1">5 hari yang lalu</p>
-                                </div>
-                                <div class="text-sm text-red-600 font-semibold">-Rp200k</div>
-                            </div>
-
-                            <!-- Item -->
-                            <div
-                                class="flex items-start space-x-3 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
-                                <div
-                                    class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <i class="fas fa-recycle text-yellow-600 text-sm"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-800">Setoran sampah</p>
-                                    <p class="text-xs text-gray-500">Logam: 2kg, Kaca: 1kg</p>
-                                    <p class="text-xs text-gray-400 mt-1">1 minggu yang lalu</p>
-                                </div>
-                                <div class="text-sm text-green-600 font-semibold">+Rp35k</div>
-                            </div>
+                            @empty
+                                <p class="text-sm text-gray-500">Belum ada transaksi</p>
+                            @endforelse
                         </div>
                     </div>
 
@@ -228,62 +210,52 @@
                     <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-lg font-semibold text-gray-800">Harga Sampah Terkini</h3>
-                            <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Per Kg</span>
+                            <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Per
+                                {{ $sampah->first()->satuan ?? 'Kg' }}</span>
                         </div>
                         <div class="space-y-3">
-                            <!-- Item -->
-                            <div
-                                class="flex items-center justify-between p-2 hover:bg-green-50 rounded-lg transition-colors">
-                                <div class="flex items-center">
-                                    <div
-                                        class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                        <i class="fas fa-trash text-green-600 text-xs"></i>
+                            @foreach ($sampah as $item)
+                                <!-- Item -->
+                                <div
+                                    class="flex items-center justify-between p-2 hover:bg-green-50 rounded-lg transition-colors">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-8 h-8 rounded-full flex items-center justify-center mr-3
+                    @switch($item->nama)
+                        @case('Plastik') bg-green-100 @break
+                        @case('Kertas') bg-blue-100 @break
+                        @case('Logam') bg-yellow-100 @break
+                        @case('Kaca') bg-red-100 @break
+                        @default bg-gray-100
+                    @endswitch">
+                                            <i
+                                                class="fas
+                        @switch($item->nama)
+                            @case('Plastik') fa-trash text-green-600 @break
+                            @case('Kertas') fa-file-alt text-blue-600 @break
+                            @case('Logam') fa-cube text-yellow-600 @break
+                            @case('Kaca') fa-wine-bottle text-red-600 @break
+                            @default fa-trash-alt text-gray-600
+                        @endswitch text-xs"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-800">{{ $item->nama }}</span>
                                     </div>
-                                    <span class="text-sm font-medium text-gray-800">Plastik</span>
+                                    <span
+                                        class="text-sm font-semibold
+                @switch($item->nama)
+                    @case('Plastik') text-green-600 @break
+                    @case('Kertas') text-blue-600 @break
+                    @case('Logam') text-yellow-600 @break
+                    @case('Kaca') text-red-600 @break
+                    @default text-gray-600
+                @endswitch">
+                                        Rp{{ number_format($item->harga_kg, 0, ',', '.') }}/{{ $item->satuan }}
+                                    </span>
                                 </div>
-                                <span class="text-sm font-semibold text-green-600">Rp5,000</span>
-                            </div>
-
-                            <!-- Item -->
-                            <div
-                                class="flex items-center justify-between p-2 hover:bg-blue-50 rounded-lg transition-colors">
-                                <div class="flex items-center">
-                                    <div
-                                        class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                        <i class="fas fa-file-alt text-blue-600 text-xs"></i>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-800">Kertas</span>
-                                </div>
-                                <span class="text-sm font-semibold text-blue-600">Rp3,000</span>
-                            </div>
-
-                            <!-- Item -->
-                            <div
-                                class="flex items-center justify-between p-2 hover:bg-yellow-50 rounded-lg transition-colors">
-                                <div class="flex items-center">
-                                    <div
-                                        class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
-                                        <i class="fas fa-cube text-yellow-600 text-xs"></i>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-800">Logam</span>
-                                </div>
-                                <span class="text-sm font-semibold text-yellow-600">Rp10,000</span>
-                            </div>
-
-                            <!-- Item -->
-                            <div
-                                class="flex items-center justify-between p-2 hover:bg-red-50 rounded-lg transition-colors">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                                        <i class="fas fa-wine-bottle text-red-600 text-xs"></i>
-                                    </div>
-                                    <span class="text-sm font-medium text-gray-800">Kaca</span>
-                                </div>
-                                <span class="text-sm font-semibold text-red-600">Rp2,500</span>
-                            </div>
+                            @endforeach
                         </div>
                         <div class="mt-4 text-center">
-                            <a href=""
+                            <a href="{{ route('harga.sampah') }}"
                                 class="text-sm text-green-600 hover:text-green-800 font-medium transition-colors inline-flex items-center">
                                 Lihat detail harga sampah <i class="fas fa-chevron-right ml-1 text-xs"></i>
                             </a>
@@ -310,7 +282,7 @@
                     });
                 }
 
-                // Nasabah Chart
+                // Nasabah Chart (Bar)
                 const nasabahCanvas = document.getElementById('nasabahChart');
                 if (nasabahCanvas) {
                     const nasabahCtx = nasabahCanvas.getContext('2d');
@@ -322,7 +294,7 @@
                             ],
                             datasets: [{
                                 label: 'Setoran Sampah (kg)',
-                                data: [12, 8, 15, 10, 18, 22, 25, 30, 28, 35, 40, 45],
+                                data: @json($chartSetoran),
                                 backgroundColor: '#10B981',
                                 borderRadius: 6,
                                 borderSkipped: false
@@ -381,9 +353,9 @@
                     new Chart(nasabahTypeCtx, {
                         type: 'doughnut',
                         data: {
-                            labels: ['Plastik', 'Kertas', 'Logam', 'Kaca', 'Lainnya'],
+                            labels: @json($jenisLabels),
                             datasets: [{
-                                data: [45, 30, 15, 8, 2],
+                                data: @json($jenisData),
                                 backgroundColor: [
                                     '#3B82F6',
                                     '#10B981',
@@ -416,7 +388,7 @@
                                     bodyColor: '#ffffff',
                                     callbacks: {
                                         label: function(context) {
-                                            return context.label + ': ' + context.parsed + 'kg';
+                                            return context.label + ': ' + context.parsed + ' kg';
                                         }
                                     }
                                 }
@@ -425,29 +397,6 @@
                         }
                     });
                 }
-
-                // Add animation to cards on scroll
-                const observerOptions = {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                };
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateY(0)';
-                        }
-                    });
-                }, observerOptions);
-
-                // Observe all fade-in-up elements
-                document.querySelectorAll('.fade-in-up').forEach(el => {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(30px)';
-                    el.style.transition = 'all 0.6s ease-out';
-                    observer.observe(el);
-                });
             });
         </script>
     @endpush

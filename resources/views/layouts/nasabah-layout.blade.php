@@ -193,7 +193,7 @@
                     <span class="sidebar-text">Dashboard</span>
                 </a>
 
-                <a href=""
+                <a href="{{ route('nasabah.tarik.tunai') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-arrow-down text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Tarik Saldo</span>
@@ -209,7 +209,7 @@
                     <span class="sidebar-text">Harga Sampah</span>
                 </a>
 
-                <a href=""
+                <a href="{{ route('nasabah.riwayat.index') }}"
                     class="nav-link-hover flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-white/90 hover:text-white group sidebar-icon-only">
                     <i class="fas fa-history text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
                     <span class="sidebar-text">Riwayat Transaksi</span>

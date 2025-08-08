@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\TransaksiSetor;
 use App\Models\TransaksiTarik;
 use App\Http\Controllers\Controller;
+use App\Models\TransaksiNasabah;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,8 +16,7 @@ class SetorController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        $ajuan = TransaksiTarik::with('user')->where('status', 'pending')->get();
+        $users = User::where('role', 'nasabah')->get();
         $sampahs = Sampah::all();
         $transaksi = TransaksiSetor::with(['user', 'sampah'])
             ->where('user_id', Auth::id())
@@ -31,27 +31,38 @@ class SetorController extends Controller
         $request->validate([
             'sampah_id' => 'required|exists:sampah,id',
             'berat' => 'required|numeric|min:0.1',
-            'catatan' => 'nullable|string'
+            'catatan' => 'nullable|string',
+            'user_id' => 'required|exists:users,id'
         ]);
 
         $sampah = Sampah::findOrFail($request->sampah_id);
         $hargaPerKg = $sampah->harga_kg;
         $berat = $request->berat;
         $totalHarga = $hargaPerKg * $berat;
+        $user = User::findOrFail($request->user_id);
 
-        TransaksiSetor::create([
+        // Buat transaksi setor sampah
+        $transaksiSetor = TransaksiSetor::create([
             'user_id'       => $request->user_id,
             'sampah_id'     => $request->sampah_id,
             'berat'         => $berat,
             'total_harga'   => $totalHarga,
-            'status'        => 'pending', // default
+            'status'        => 'pending',
             'tanggal_setor' => now(),
-            'created_at'    => now(),
-            'updated_at'    => now(),
+        ]);
+
+        // Buat transaksi nasabah
+        TransaksiNasabah::create([
+            'nasabah_id'  => $request->user_id,
+            'tipe'        => 'pemasukan',
+            'keterangan' => 'Setoran sampah: ' . $sampah->nama . ' (' . $berat . ' kg)',
+            'jumlah'      => $totalHarga,
+            'status'      => 'selesai',
+            'created_at'  => now(),
+            'updated_at'  => now(),
         ]);
 
         // Tambahkan saldo ke user
-        $user = User::findOrFail($request->user_id);
         $user->saldo += $totalHarga;
         $user->save();
 
@@ -65,14 +76,31 @@ class SetorController extends Controller
             'jumlah_uang' => 'required|numeric|min:1000',
             'catatan' => 'nullable|string',
         ]);
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jumlah_uang' => 'required|numeric|min:1000',
+            'catatan' => 'nullable|string',
+        ]);
 
+        // Ambil user
+        $user = User::findOrFail($request->user_id);
         // Ambil user
         $user = User::findOrFail($request->user_id);
 
         // Tambahkan saldo
         $user->saldo += $request->jumlah_uang;
         $user->save();
+        // Tambahkan saldo
+        $user->saldo += $request->jumlah_uang;
+        $user->save();
 
+        // Simpan riwayat transaksi setor tunai
+        TransaksiSetor::create([
+            'user_id' => $user->id,
+            'total_harga' => $request->jumlah_uang,
+            'catatan' => $request->catatan,
+        ]);
         // Simpan riwayat transaksi setor tunai
         TransaksiSetor::create([
             'user_id' => $user->id,
@@ -105,6 +133,7 @@ class SetorController extends Controller
         // Update status penarikan
         $Penarikan->status = 'approved';
         $Penarikan->save();
+
 
         return redirect()->back()->with('success', 'Penarikan dikonfirmasi dan saldo dikurangi.');
     }
@@ -145,4 +174,5 @@ class SetorController extends Controller
 
         return back()->with('success', 'Penarikan berhasil dan saldo user telah dikurangi.');
     }
+
 }
