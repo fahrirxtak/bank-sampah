@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\TransaksiOperasional;
-use App\Models\TransaksiSetor;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\TransaksiSetor;
+use App\Models\RiwayatTransaksi;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\TransaksiOperasional;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        
         // Total berat sampah (kg)
         $totalSampah = TransaksiSetor::sum('berat');
 
@@ -75,11 +77,15 @@ class DashboardController extends Controller
             ->take(3)
             ->with('user') // pastikan relasi user sudah ada di model
             ->get();
+            
+         $totalPendapatan = RiwayatTransaksi::where('kategori', 'pemasukan')->sum('jumlah');
+
 
 
         return view('admin.dashboard', compact(
             'totalSampah',
             'nasabahAktif',
+            'totalPendapatan',
             'labelsBulanan',
             'dataBulanan',
             'jenisLabels',
