@@ -43,7 +43,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/setor-sampah', [SetorController::class, 'index'])->name('admin.setor.index');
     Route::post('/setor', [SetorController::class, 'store'])->name('setor.sampah.store');
     Route::post('/setor-tunai', [SetorController::class, 'storeTunai'])->name('setor.tunai.store');
-     Route::post('penarikan/{id}/konfirmasi', [SetorController::class, 'konfirmasi'])->name('admin.penarikan.konfirmasi');
+    Route::post('/penarikan/admin', [SetorController::class, 'tarikOlehAdmin'])->name('penarikan.admin');
+    Route::patch('penarikan/{id}/konfirmasi', [SetorController::class, 'konfirmasi'])->name('admin.penarikan.konfirmasi');
     // transaksi operasional
     Route::get('/transaksi-operasional', [TransaksiOperasionalController::class, 'index'])->name('admin.transaksi.index');
     Route::get('/transaksi-operasional/create', [TransaksiOperasionalController::class, 'create'])->name('admin.transaksi.create');
