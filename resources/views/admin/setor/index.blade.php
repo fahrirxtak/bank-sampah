@@ -231,7 +231,6 @@
                 </div>
             </div>
 
-            <!-- Form Tarik Tunai -->
             <div id="formTarikTunai" class="form-container hidden animate-fade-in">
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
                     <div class="bg-gradient-to-r from-purple-500 to-violet-600 px-8 py-6 text-white">
@@ -239,12 +238,15 @@
                             <i class="fas fa-money-bill-wave mr-3 text-2xl"></i>
                             Form Tarik Tunai
                         </h3>
-                        <p class="text-purple-100 mt-2">Tarik saldo dari rekening bank sampah Anda</p>
+                        <p class="text-purple-100 mt-2">Tarik saldo dari rekening bank sampah</p>
                     </div>
 
-                    <form action="" method="POST" class="p-8 space-y-6">
+                    <form id="tarikTunaiForm" action="{{ route('penarikan.admin') }}" method="POST"
+                        class="p-8 space-y-6">
                         @csrf
                         <input type="hidden" name="jenis_transaksi" value="tarik_tunai">
+
+                        <!-- Pilih User -->
                         <div class="space-y-3">
                             <label class="flex items-center text-sm font-semibold text-gray-700">
                                 <i class="fas fa-user mr-2 text-blue-600"></i>
@@ -256,24 +258,22 @@
                                 <option value="">Pilih User</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}" data-saldo="{{ $user->saldo }}">
-                                        {{ $user->name }}</option>
+                                        {{ $user->name }} (Saldo: Rp {{ number_format($user->saldo, 0, ',', '.') }})
+                                    </option>
                                 @endforeach
                             </select>
-
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="space-y-3">
-                                <label class="flex items-center text-sm font-semibold text-gray-700">
-                                    <i class="fas fa-money-bill-wave mr-2 text-purple-600"></i>
-                                    Jumlah Penarikan (Rp) <span class="text-red-500 ml-1">*</span>
-                                </label>
-                                <input type="number" name="jumlah_uang" min="10000" step="1000"
-                                    class="w-full rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200 p-3 text-lg"
-                                    placeholder="Minimal Rp 10.000" required>
-                                <p class="text-sm text-gray-500">Minimal penarikan Rp 10.000</p>
-                            </div>
-
+                        <!-- Jumlah Penarikan -->
+                        <div class="space-y-3">
+                            <label class="flex items-center text-sm font-semibold text-gray-700">
+                                <i class="fas fa-money-bill-wave mr-2 text-purple-600"></i>
+                                Jumlah Penarikan (Rp) <span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <input type="number" name="jumlah_uang" min="10000" step="1000"
+                                class="w-full rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200 p-3 text-lg"
+                                placeholder="Minimal Rp 10.000" required>
+                            <p class="text-sm text-gray-500">Minimal penarikan Rp 10.000</p>
                         </div>
 
                         <!-- Info Penarikan -->
@@ -282,12 +282,12 @@
                             <h4 class="font-semibold text-purple-800 mb-3">Informasi Penarikan</h4>
                             <div class="space-y-2 text-sm text-gray-700">
                                 <p>• Penarikan tunai: Datang ke bank sampah dengan membawa KTP</p>
-                                <p>• Transfer bank: Sertakan nomor rekening di catatan</p>
-                                <p>• Proses: 1-2 hari kerja setelah disetujui admin</p>
-                                <p>• Biaya admin transfer: Rp 2.500</p>
+                                <p>• Masukan Password User</p>
+                                <p>• Pastikan jumlah penarikan sesuai saldo</p>
                             </div>
                         </div>
 
+                        <!-- Catatan -->
                         <div class="space-y-3">
                             <label class="flex items-center text-sm font-semibold text-gray-700">
                                 <i class="fas fa-sticky-note mr-2 text-purple-600"></i>
@@ -299,19 +299,47 @@
 Untuk tunai: tulis alasan penarikan" required></textarea>
                         </div>
 
+                        <!-- Tombol -->
                         <div class="pt-6 border-t border-gray-200">
                             <button type="button" onclick="showPasswordModal()"
                                 class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-violet-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
                                 <i class="fas fa-hand-holding-usd mr-2"></i>
                                 Ajukan Penarikan
                             </button>
-
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div  id="formKonfirmasiTarikTunai" class="form-container min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8 hidden">
+            <!-- Modal Password -->
+            <div id="passwordModal"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white p-6 rounded-xl w-96">
+                    <h3 class="text-lg font-semibold mb-4">Masukkan Password User</h3>
+                    <input type="password" name="password_user" form="tarikTunaiForm"
+                        class="w-full p-3 border rounded-lg mb-4" placeholder="Password user" required>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="hidePasswordModal()"
+                            class="px-4 py-2 bg-gray-300 rounded-lg">Batal</button>
+                        <button type="submit" form="tarikTunaiForm"
+                            class="px-4 py-2 bg-purple-600 text-white rounded-lg">Proses</button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function showPasswordModal() {
+                    document.getElementById('passwordModal').classList.remove('hidden');
+                }
+
+                function hidePasswordModal() {
+                    document.getElementById('passwordModal').classList.add('hidden');
+                }
+            </script>
+
+
+            <div id="formKonfirmasiTarikTunai"
+                class="form-container min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8 hidden">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
                     <!-- Header Section -->
                     <div class="mb-8">

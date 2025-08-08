@@ -111,33 +111,68 @@ class SetorController extends Controller
         return redirect()->back()->with('success', 'Setoran tunai berhasil! Saldo user telah ditambahkan.');
     }
 
-    public function Tarik(Request $request)
+
+    public function konfirmasi($id)
     {
-        $request->validate([
-            'user_id_hidden' => 'required|exists:users,id',
-            'jumlah_uang_hidden' => 'required|numeric|min:10000',
-            'catatan_hidden' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        $Penarikan = TransaksiTarik::findOrFail($id);
 
-        $user = User::find($request->user_id_hidden);
-
-        // Hanya cek password, tidak update
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['password' => 'Password salah'])->withInput();
+        if ($Penarikan->status !== 'pending') {
+            return redirect()->back()->with('error', 'Penarikan sudah dikonfirmasi.');
         }
 
-        // Simpan transaksi tarik
+        $user = $Penarikan->user;
+
+        if ($user->saldo < $Penarikan->jumlah_tarik) {
+            return redirect()->back()->with('error', 'Saldo tidak mencukupi.');
+        }
+
+        // Kurangi saldo user
+        $user->saldo -= $Penarikan->jumlah_tarik;
+        $user->save();
+
+        // Update status penarikan
+        $Penarikan->status = 'approved';
+        $Penarikan->save();
+
+
+        return redirect()->back()->with('success', 'Penarikan dikonfirmasi dan saldo dikurangi.');
+    }
+
+    public function tarikOlehAdmin(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jumlah_uang' => 'required|numeric|min:10000',
+            'password_user' => 'required',
+            'catatan' => 'required|string',
+        ]);
+
+        // Ambil data user
+        $user = User::findOrFail($request->user_id);
+
+        // Cek password
+        if (!Hash::check($request->password_user, $user->password)) {
+            return back()->withErrors(['password_user' => 'Password user salah!']);
+        }
+
+        // Cek saldo cukup
+        if ($user->saldo < $request->jumlah_uang) {
+            return back()->withErrors(['jumlah_uang' => 'Saldo user tidak mencukupi']);
+        }
+
+        // Buat transaksi tarik tunai (langsung approved)
         TransaksiTarik::create([
             'user_id' => $user->id,
-            'jumlah_tarik' => $request->jumlah_uang_hidden,
-            'status' => 'menunggu',
+            'jumlah_tarik' => $request->jumlah_uang,
+            'status' => 'approved',
             'tanggal_tarik' => now(),
         ]);
 
-        // Update saldo jika perlu:
-        $user->decrement('saldo', $request->jumlah_uang_hidden);
+        // Kurangi saldo user
+        $user->saldo -= $request->jumlah_uang;
+        $user->save();
 
-    return redirect()->back()->with('success', 'Penarikan berhasil diajukan.');
-}
+        return back()->with('success', 'Penarikan berhasil dan saldo user telah dikurangi.');
+    }
+
 }
