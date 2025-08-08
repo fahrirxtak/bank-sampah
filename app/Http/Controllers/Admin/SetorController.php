@@ -23,7 +23,7 @@ class SetorController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('admin.setor.index', compact('users', 'sampahs', 'transaksi'));
+        return view('admin.setor.index', compact('users', 'ajuan', 'sampahs', 'transaksi'));
     }
 
     public function store(Request $request)
@@ -76,14 +76,31 @@ class SetorController extends Controller
             'jumlah_uang' => 'required|numeric|min:1000',
             'catatan' => 'nullable|string',
         ]);
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'jumlah_uang' => 'required|numeric|min:1000',
+            'catatan' => 'nullable|string',
+        ]);
 
+        // Ambil user
+        $user = User::findOrFail($request->user_id);
         // Ambil user
         $user = User::findOrFail($request->user_id);
 
         // Tambahkan saldo
         $user->saldo += $request->jumlah_uang;
         $user->save();
+        // Tambahkan saldo
+        $user->saldo += $request->jumlah_uang;
+        $user->save();
 
+        // Simpan riwayat transaksi setor tunai
+        TransaksiSetor::create([
+            'user_id' => $user->id,
+            'total_harga' => $request->jumlah_uang,
+            'catatan' => $request->catatan,
+        ]);
         // Simpan riwayat transaksi setor tunai
         TransaksiSetor::create([
             'user_id' => $user->id,
@@ -121,6 +138,6 @@ class SetorController extends Controller
         // Update saldo jika perlu:
         $user->decrement('saldo', $request->jumlah_uang_hidden);
 
-        return redirect()->back()->with('success', 'Penarikan berhasil diajukan.');
-    }
+    return redirect()->back()->with('success', 'Penarikan berhasil diajukan.');
+}
 }
