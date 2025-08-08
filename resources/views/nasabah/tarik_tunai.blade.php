@@ -1,5 +1,5 @@
 <x-nasabah-layout>
-    <div class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8">
+    <div class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-16">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header Section -->
             <div class="mb-8">
@@ -70,12 +70,12 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500">Rp</span>
                                 </div>
-                                <input type="number" 
-                                       name="jumlah_tarik" 
+                                <input type="number"
+                                       name="jumlah_tarik"
                                        id="jumlah_tarik"
-                                       class="block w-full pl-12 pr-3 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" 
+                                       class="block w-full pl-12 pr-3 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                                        placeholder="0"
-                                       required 
+                                       required
                                        min="1000"
                                        step="1000">
                             </div>
@@ -86,17 +86,17 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-3">Jumlah Cepat</label>
                             <div class="grid grid-cols-3 gap-3">
-                                <button type="button" 
+                                <button type="button"
                                         onclick="setAmount(10000)"
                                         class="px-4 py-2 border border-green-200 text-green-600 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium">
                                     10K
                                 </button>
-                                <button type="button" 
+                                <button type="button"
                                         onclick="setAmount(50000)"
                                         class="px-4 py-2 border border-green-200 text-green-600 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium">
                                     50K
                                 </button>
-                                <button type="button" 
+                                <button type="button"
                                         onclick="setAmount(100000)"
                                         class="px-4 py-2 border border-green-200 text-green-600 rounded-lg hover:bg-green-50 transition-colors text-sm font-medium">
                                     100K
@@ -104,7 +104,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" 
+                        <button type="submit"
                                 class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                             <span class="flex items-center justify-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

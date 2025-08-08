@@ -290,10 +290,34 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
-                                            class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-200 shadow-sm">
-                                            <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                                            <i class="fas fa-check-circle mr-1"></i>
-                                            Selesai
+                                            class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold border shadow-sm
+    @switch($transaksi->status)
+        @case('selesai')
+            bg-gradient-to-r from-green-100 to-teal-100 text-green-700 border-green-200
+            @break
+        @case('pending')
+            bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-700 border-yellow-200
+            @break
+        @case('ditolak')
+            bg-gradient-to-r from-red-100 to-pink-100 text-red-700 border-red-200
+            @break
+    @endswitch">
+                                            <div
+                                                class="w-2 h-2 rounded-full mr-2
+        @switch($transaksi->status)
+            @case('selesai') bg-green-500 @break
+            @case('pending') bg-yellow-500 @break
+            @case('ditolak') bg-red-500 @break
+        @endswitch">
+                                            </div>
+                                            <i
+                                                class="fas
+        @switch($transaksi->status)
+            @case('selesai') fa-check-circle @break
+            @case('pending') fa-clock @break
+            @case('ditolak') fa-times-circle @break
+        @endswitch mr-1"></i>
+                                            {{ ucfirst($transaksi->status) }}
                                         </span>
                                     </td>
                                 </tr>
